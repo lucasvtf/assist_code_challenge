@@ -3,6 +3,8 @@ import 'express-async-errors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
+import userRoutes from './routers/UserRoutes';
+import errorHandler from './middlewares/errorMiddleware';
 
 const app = express();
 
@@ -17,5 +19,9 @@ app.use(
     origin: process.env.CORS_ORIGIN,
   })
 );
+
+app.use(userRoutes);
+
+app.use(errorHandler);
 
 export default app;
