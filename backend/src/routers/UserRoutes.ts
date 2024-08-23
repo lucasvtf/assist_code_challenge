@@ -1,16 +1,19 @@
 import { Router } from 'express';
 import UserController from '../controllers/UserController';
-import { createUserMiddleware } from '../middlewares/createUserMiddleware';
-// import { loginMiddleware } from '../middlewares/loginMiddlware';
+import { createOrLoginMiddleware } from '../middlewares/createOrLoginMiddleware';
 
 const userRoutes = Router();
 
-userRoutes.post('/register', createUserMiddleware, (req, res, next) =>
-  new UserController(req, res, next).create()
+userRoutes.post('/register', createOrLoginMiddleware, (req, res, next) =>
+  new UserController(req, res, next).create(),
 );
 
-// userRoutes.post('/user/login', loginMiddleware, (req, res, next) =>
-//   new UserController(req, res, next).login()
-// );
+userRoutes.get('/profile', (req, res, next) =>
+  new UserController(req, res, next).checkUser(),
+);
+
+userRoutes.post('/login', createOrLoginMiddleware, (req, res, next) =>
+  new UserController(req, res, next).login()
+);
 
 export default userRoutes;
