@@ -1,7 +1,8 @@
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import type IUser from '../interfaces/IUser';
 import UserService from '../services/UserService';
-import IUser from '../interfaces/IUser';
-import { StatusCodes, ReasonPhrases } from 'http-status-codes';
+import { createToken, verifyToken } from '../utils/jwt';
 
 export default class UserController {
   private req: Request;
@@ -19,23 +20,42 @@ export default class UserController {
   public async create() {
     try {
       const user: IUser = this.req.body;
-      const token = await this.service.create(user);
+      const newUser = await this.service.create(user);
+      const token = createToken({ id: newUser.id, username: newUser.username });
+
       return this.res
         .cookie('token', token)
         .status(StatusCodes.CREATED)
-        .json(ReasonPhrases.CREATED);
+        .json(newUser);
     } catch (error) {
       this.next(error);
     }
   }
 
-  //   public async login() {
-  //     try {
-  //       const user = this.req.body;
-  //       const token = await this.service.login(user);
-  //       return this.res.status(StatusCodes.ACCEPTED).json({ token });
-  //     } catch (error) {
-  //       this.next(error);
-  //     }
-  //   }
+  public async checkUser() {
+    try {
+      const { token } = this.req.cookies;
+      const userData = verifyToken(token);
+
+      if (userData) {
+        return this.res.json(userData);
+      } else {
+        return this.res
+          .status(StatusCodes.UNAUTHORIZED)
+          .json({ message: 'Unauthorized' });
+      }
+    } catch (error) {
+      return this.next(error);
+    }
+  }
+
+  public async login() {
+    try {
+      const user = this.req.body;
+      const token = await this.service.login(user);
+      return this.res.cookie('token', token).status(StatusCodes.ACCEPTED).json(user);
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
