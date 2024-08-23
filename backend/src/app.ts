@@ -1,10 +1,11 @@
 import express from 'express';
 import 'express-async-errors';
-import morgan from 'morgan';
-import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import userRoutes from './routers/UserRoutes';
+import helmet from 'helmet';
+import morgan from 'morgan';
 import errorHandler from './middlewares/errorMiddleware';
+import userRoutes from './routers/UserRoutes';
 
 const app = express();
 
@@ -14,10 +15,13 @@ app.use(morgan('tiny'));
 
 app.use(helmet());
 
+app.use(cookieParser());
+
 app.use(
   cors({
+    credentials: true,
     origin: process.env.CORS_ORIGIN,
-  })
+  }),
 );
 
 app.use(userRoutes);
