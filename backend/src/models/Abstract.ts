@@ -1,4 +1,4 @@
-import { model, Model, models, Schema } from 'mongoose';
+import { type Model, type Schema, model, models } from 'mongoose';
 
 export default class ModelExample<T> {
   protected model: Model<T>;

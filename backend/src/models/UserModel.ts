@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose';
-import IUser from '../interfaces/IUser';
+import type IUser from '../interfaces/IUser';
 import ModelExample from './Abstract';
 
 export default class UserModel extends ModelExample<IUser> {
@@ -9,7 +9,7 @@ export default class UserModel extends ModelExample<IUser> {
         username: { type: String, required: true, unique: true },
         password: { type: String, required: true },
       },
-      { timestamps: true }
+      { timestamps: true },
     );
     const modelName = 'users';
     super(schema, modelName);
