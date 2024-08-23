@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
-import IJwt from '../interfaces/IJwt';
+import type IJwt from '../interfaces/IJwt';
 
 const secret = process.env.JWT_SECRET || 'assistchat';
 
@@ -12,7 +12,7 @@ export const createToken = (payload: IJwt): string => {
   return jwt.sign(payload, secret, jwtConfig);
 };
 
-export const verifyToken = (token: string): any => {
+export const verifyToken = (token: string): IJwt => {
   try {
     return jwt.verify(token, secret, jwtConfig);
   } catch (err) {
