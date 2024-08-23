@@ -1,12 +1,13 @@
-import Register from './components/Register'
+import { UserContextProvider } from './context/UserContext';
+import Routes from './Routes';
 
 function App() {
-  
-
   return (
-    <Register />
-  )
+    <UserContextProvider>
+      <Routes />
+    </UserContextProvider>
+  );
 }
 
-export default App
- 
+export default App;
+
