@@ -37,7 +37,7 @@ export default class UserService {
     const userLogin = await this.userModel.findOne({
       username: user.username,
     });
-    console.log(userLogin)
+
     if (!userLogin)
       throw new ApiErrors('Wrong username.', StatusCodes.FORBIDDEN);
 

@@ -53,7 +53,10 @@ export default class UserController {
     try {
       const user = this.req.body;
       const token = await this.service.login(user);
-      return this.res.cookie('token', token).status(StatusCodes.ACCEPTED).json(user);
+      return this.res
+        .cookie('token', token)
+        .status(StatusCodes.ACCEPTED)
+        .json(user);
     } catch (error) {
       this.next(error);
     }

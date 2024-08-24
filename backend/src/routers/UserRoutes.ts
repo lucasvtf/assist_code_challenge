@@ -13,7 +13,7 @@ userRoutes.get('/profile', (req, res, next) =>
 );
 
 userRoutes.post('/login', createOrLoginMiddleware, (req, res, next) =>
-  new UserController(req, res, next).login()
+  new UserController(req, res, next).login(),
 );
 
 export default userRoutes;
