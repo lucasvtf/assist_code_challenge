@@ -8,7 +8,7 @@ export const createOrLoginMiddleware = (
 ) => {
   const { username, password } = req.body;
 
-  if (username && username.length <= 5) {
+  if (username && username.length <= 2) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .send({ error: 'Invalid username.' });
