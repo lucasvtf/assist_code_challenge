@@ -10,7 +10,6 @@ export function UserContextProvider({ children }) {
   useEffect(() => {
     const fetchUser = async () => {
       const userData = await checkUser();
-      console.log(userData)
       setId(userData.id)
       setLoggedInUsername(userData.username)
     }

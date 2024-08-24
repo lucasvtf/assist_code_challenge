@@ -13,7 +13,7 @@ function RegisterAndLoginForm() {
     try {
       const url = isLoginOrRegister === 'register' ? 'register' : 'login'
       const user = await registerOrLogin(url, username, password);
-      setLoggedInUsername(user.username);
+      setLoggedInUsername(username);
       setId(user.id);
     } catch (error) {
       console.error('Registration failed:', error);
