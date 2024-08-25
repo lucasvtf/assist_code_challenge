@@ -12,6 +12,9 @@ declare module 'ws' {
   interface WebSocket {
     userId?: string;
     username?: string;
+    isAlive?: boolean;
+    timer?: NodeJS.Timeout;
+    deathTimer?: NodeJS.Timeout;
   }
 }
 
@@ -20,6 +23,35 @@ export function setupWebSocketServer(server: http.Server) {
   const messageService = new MessageService();
 
   wss.on('connection', (ws: WebSocket, req: IncomingMessage) => {
+    function notifyAboutOnlinePeople() {
+      [...wss.clients].forEach((client: WebSocket) => {
+        client.send(
+          JSON.stringify({
+            online: [...wss.clients].map((c: WebSocket) => ({
+              userId: (c as any).userId,
+              username: (c as any).username,
+            })),
+          }),
+        );
+      });
+    }
+
+    ws.isAlive = true;
+
+    ws.timer = setInterval(() => {
+      ws.ping();
+      ws.deathTimer = setTimeout(() => {
+        ws.isAlive = false;
+        clearInterval(ws.timer);
+        ws.terminate();
+        notifyAboutOnlinePeople();
+      }, 1000);
+    }, 5000);
+
+    ws.on('pong', () => {
+      clearTimeout(ws.deathTimer);
+    });
+
     try {
       const token = parseCookieToken(req.headers.cookie || '', 'token');
 
@@ -67,7 +99,7 @@ export function setupWebSocketServer(server: http.Server) {
                     text,
                     sender: ws.userId,
                     recipient,
-                    id: messageDocument.id,
+                    _id: messageDocument.id,
                   }),
                 );
                 console.log(`Você enviou: ${text}`);
@@ -82,19 +114,10 @@ export function setupWebSocketServer(server: http.Server) {
         console.error('Erro no WebSocket:', error);
       });
 
-      [...wss.clients].forEach((client: WebSocket) => {
-        client.send(
-          JSON.stringify({
-            online: [...wss.clients].map((c: WebSocket) => ({
-              userId: (c as any).userId,
-              username: (c as any).username,
-            })),
-          }),
-        );
-      });
+      notifyAboutOnlinePeople();
     } catch (error) {
       console.error('Erro durante a conexão WebSocket:', error);
-      ws.close(); // Fecha a conexão em caso de erro
+      ws.close();
     }
   });
 }
