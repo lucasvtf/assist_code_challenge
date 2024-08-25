@@ -5,4 +5,5 @@ export default interface IMessage {
   sender: Types.ObjectId;
   recipient: Types.ObjectId;
   text: string;
+  createdAt?: Date;
 }
