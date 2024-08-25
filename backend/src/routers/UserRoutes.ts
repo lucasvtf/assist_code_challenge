@@ -16,4 +16,12 @@ userRoutes.post('/login', createOrLoginMiddleware, (req, res, next) =>
   new UserController(req, res, next).login(),
 );
 
+userRoutes.post('/logout', createOrLoginMiddleware, (req, res, next) =>
+  new UserController(req, res, next).logout(),
+);
+
+userRoutes.get('/people', (req, res, next) =>
+  new UserController(req, res, next).getUsers(),
+);
+
 export default userRoutes;
