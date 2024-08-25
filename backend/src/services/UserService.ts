@@ -55,4 +55,8 @@ export default class UserService {
     });
     return token;
   }
+
+  public async getUsers() {
+    return this.userModel.find({}, { username: 1 });
+  }
 }
