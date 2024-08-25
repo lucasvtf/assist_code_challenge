@@ -61,4 +61,24 @@ export default class UserController {
       this.next(error);
     }
   }
+
+  public async getUsers() {
+    try {
+      const users = await this.service.getUsers();
+      return this.res.status(StatusCodes.OK).json(users);
+    } catch (error) {
+      this.next(error);
+    }
+  }
+
+  public async logout() {
+    try {
+      return this.res
+        .cookie('token', '')
+        .status(StatusCodes.ACCEPTED)
+        .json({ message: 'Successfully logged out!' });
+    } catch (error) {
+      this.next(error);
+    }
+  }
 }
