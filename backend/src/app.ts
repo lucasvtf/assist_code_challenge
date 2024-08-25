@@ -5,8 +5,8 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import { WebSocket, Server as WebSocketServer } from 'ws';
 import errorHandler from './middlewares/errorMiddleware';
+import messageRoutes from './routers/MessageRoutes';
 import userRoutes from './routers/UserRoutes';
 import { setupWebSocketServer } from './websockets/websocketHandler';
 
@@ -29,6 +29,7 @@ app.use(
 );
 
 app.use(userRoutes);
+app.use(messageRoutes);
 
 app.use(errorHandler);
 
