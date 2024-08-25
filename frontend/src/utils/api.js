@@ -15,6 +15,16 @@ export async function registerOrLogin(url, username, password) {
   }
 }
 
+export async function logout() {
+  try {
+    const userData = await api.post('/logout');
+    return userData.data;
+  } catch (error) {
+    console.error('Erro ao fazer a requisição:', error);
+    return null;
+  }
+}
+
 export async function checkUser() {
   try {
     const userData = await api.get('/profile');
@@ -24,4 +34,26 @@ export async function checkUser() {
     return null;
   }
 }
+
+export async function getMessages(userId) {
+  try {
+    const messageData = await api.get(`/messages/${userId}`);
+    return messageData.data;
+  } catch (error) {
+    console.error('Erro ao fazer a requisição:', error);
+    return null;
+  }
+}
+
+export async function getPeople() {
+  try {
+    const peopleData = await api.get('/people');
+    return peopleData.data;
+  } catch (error) {
+    console.error('Erro ao fazer a requisição:', error);
+    return null;
+  }
+}
+
+
 
