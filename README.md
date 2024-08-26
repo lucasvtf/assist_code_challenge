@@ -1,6 +1,6 @@
 # Assist Code Challenge
 
-Bem-vindo ao repositório do Assist Code Challenge! Este projeto é uma aplicação MERN (MongoDb, Express, React e Node.js) desenvolvida como parte de um desafio técnico.
+Bem-vindo ao repositório do Assist Code Challenge! Este projeto é uma aplicação MERN (MongoDb, Express, React e Node.js) desenvolvida como parte de um desafio técnico. Essa aplicação é um chat de mensagens em tempo real.
 
 ## Descrição
 
